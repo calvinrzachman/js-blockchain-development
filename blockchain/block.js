@@ -6,13 +6,13 @@ const { DIFFICULTY, MINE_RATE } = require('../config'); // Application wide cons
 
 class Block {
 
-    constructor(timestamp, lastHash, hash, data, nonce, DIFFICULTY) {
+    constructor(timestamp, lastHash, hash, data, nonce, difficulty) {
         this.timestamp = timestamp;
         this.lastHash = lastHash;
         this.hash = hash;
         this.data = data;
         this.nonce = nonce;  
-        this.difficulty = DIFFICULTY;
+        this.difficulty = difficulty || DIFFICULTY;
     }
 
     static genesis() {
@@ -23,14 +23,15 @@ class Block {
         let hash, timestamp;
         const lastHash = lastBlock.hash;
         let nonce = 0;
-        const difficulty = DIFFICULTY;
+        let { difficulty } = lastBlock; 
         // Repeatedly Hash Block until Difficulty Target is satisfied
         do {
             nonce++;
             timestamp = Date.now(); 
+            difficulty = Block.adjustDifficulty(timestamp, lastBlock); 
             hash = Block.calculateHash(timestamp, lastHash, data, nonce, difficulty);
             
-        } while (hash.substring(0,DIFFICULTY) !== '0'.repeat(DIFFICULTY));
+        } while (hash.substring(0,difficulty) !== '0'.repeat(difficulty));
         
         return new this(timestamp, lastHash, hash, data, nonce, difficulty);
     }
@@ -42,6 +43,14 @@ class Block {
     static blockHash(block) {
         const { timestamp, lastHash, data, nonce, difficulty} = block ;
         return Block.calculateHash(timestamp, lastHash, data, nonce, difficulty);
+    }
+
+    // Dyanamic Block Difficulty 
+    static adjustDifficulty(currentTime, lastBlock) {
+        let { difficulty } = lastBlock;
+        // Ternary expression which increases or decreases difficulty 
+        difficulty = currentTime - lastBlock.timestamp > MINE_RATE ? difficulty-1 : difficulty+1;
+        return difficulty;
     }
 }
 

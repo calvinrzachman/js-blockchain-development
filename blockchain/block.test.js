@@ -1,6 +1,6 @@
 // Block Class - Jest Unit Testing 
 const Block = require('./block');
-const { DIFFICULTY, MINE_RATE} = require('../config');
+const { DIFFICULTY, MINE_RATE } = require('../config');
 
 describe('Block', () => {
     let data, lastBlock, block; 
@@ -27,5 +27,16 @@ describe('Block', () => {
         expect(block.hash.substring(0,DIFFICULTY)).toEqual('0'.repeat(DIFFICULTY));
         console.log(JSON.stringify(block, null, 4));
     });
+
+    // Test 4
+    it('lowers difficulty when block takes too long to mine', () => {
+        expect(Block.adjustDifficulty(block.timestamp + 2*MINE_RATE, block)).toEqual(block.difficulty-1);
+    });
+
+    // Test 5
+    it('raises the difficulty for quickly mined blocks', () => {
+        expect(Block.adjustDifficulty(block.timestamp + 0.5*MINE_RATE, block)).toEqual(block.difficulty+1);
+    });
+
 
 });
