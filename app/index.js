@@ -19,7 +19,7 @@ const app = express() ;             // Call default express function - creates a
 const bchain = new Blockchain();
 const wallet = new Wallet();
 const txPool = new TransactionPool(); 
-const p2pServer = new P2pServer(bchain);
+const p2pServer = new P2pServer(bchain, txPool);
 app.use(bodyParser.json());         // Allows us to receive JSON within POST requests
 
 // Blocks
@@ -47,8 +47,8 @@ app.get('/transactions', (req, res) => {
 app.post('/transact', (req, res) => {
     const { recipient, amount } = req.body;
     const transaction = wallet.createTransaction(recipient, amount, txPool);
-    // console.log(`Transaction created ${JSON.stringify(transaction)}`);
-    // p2pServer.broadcastTransaction(transaction);
+    console.log(`Transaction created ${JSON.stringify(transaction)}`);
+    p2pServer.broadcastTransaction(transaction);
     res.redirect('/transactions'); // Redirect to existing tx GET endpoint so they can see the new tx
 });
 

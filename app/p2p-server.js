@@ -1,11 +1,19 @@
-// Setting up P2P Server 
+// Peer to Peer Server Class
+// Setting up P2P Server - shares transaction and chain information across multiple application instances
 const Websocket = require('ws');
 const P2P_PORT = process.env.P2P_PORT || 5001;
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : []; // Ternary expression which sets empty array if peers not provided
 
+// Attach type values to data so message handler can implement a switch to handle receiving 
+// data of multiple types
+const MESSAGE_TYPES = {
+    chain: 'CHAIN',
+    transaction: 'TRANSACTION',
+};
 class P2pServer {
-    constructor(blockchain) {
+    constructor(blockchain, transactionPool) {
         this.blockchain = blockchain;
+        this.transactionPool = transactionPool;
         this.sockets = [];
     }
 
@@ -43,20 +51,41 @@ class P2pServer {
     messageHandler(socket) {
         socket.on('message', message => {
             const data = JSON.parse(message);
-
-            // Update the blockchain with new data
-            this.blockchain.replaceChain(data);   
+            switch(data.type) {
+                case MESSAGE_TYPES.chain:
+                    // Update the blockchain with new data
+                    this.blockchain.replaceChain(data.chain); 
+                    break;
+                case MESSAGE_TYPES.transaction:
+                    // Add the incoming transaction to the mempool
+                    this.transactionPool.updateOrAddTransaction(data.transaction);
+            }
         });
     }
 
     // Send the users blockchain to every connected socket (connected user)
     sendChain(socket) {
-        socket.send(JSON.stringify(this.blockchain.chain)); // send takes a string to be sent 
+        socket.send(JSON.stringify({
+            type: MESSAGE_TYPES.chain, 
+            chain: this.blockchain.chain 
+        })); 
     }
     // When a new block is added to a chain, each pair should be notified of addition
     syncChains() {
         // Send the updated blockchain to all the socket peers
         this.sockets.forEach(socket => this.sendChain(socket));
+    }
+
+    //Send and Synchronize Transaction MemPool
+    sendTransaction(socket, transaction) {
+        socket.send(JSON.stringify({
+            type: MESSAGE_TYPES.transaction,
+            transaction
+        }));
+    }
+
+    broadcastTransaction(transaction) {
+        this.sockets.forEach(socket => this.sendTransaction(socket, transaction)); 
     }
 
 }
