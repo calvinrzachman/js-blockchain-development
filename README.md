@@ -3,7 +3,7 @@
 ## To run the application: 
   ### Create the first instance
   1. Clone the repository
-  2. Make sure you have all the necessary node modules installed (see package.json file)  
+  2. Make sure you have all the necessary node modules installed (see package.json file for list of dependencies)  
     a. To install modules open up the command line and type 
   
     npm -i <module name> 
