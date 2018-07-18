@@ -78,20 +78,7 @@ describe('Transaction', () => {
         });
     });
 
-    // //Scenario 4
-    // describe('creating a reward transaction', () => {
-
-    //     beforeEach(() => {
-    //         transaction = Transaction.rewardTransaction(wallet, Wallet.blockchainWallet());
-    //     });
-
-    //     it(`reward the miner's wallet`, () => {
-    //         expect(transaction.outputs.find(output => output.address === wallet.pubKey).amount)
-    //         .toEqual(MINER_REWARD);
-    //     });
-
-    // });
+   
 });
 
-// Understand arrow function
 // NEXT: Handle transactions submitted by multiple users (mempool, adding to blockchain)
