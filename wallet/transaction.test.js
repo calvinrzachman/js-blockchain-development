@@ -43,7 +43,7 @@ describe('Transaction', () => {
     });
 
     
-    // Scenario 2
+    // Scenario 2 - Transacting with Insufficient Balance
     describe('transacting with an `amount` which exceeds the balance', () => {
         beforeEach( () => {
             amount = 5000;
@@ -58,7 +58,7 @@ describe('Transaction', () => {
 
     });
 
-    // Scenario 3
+    // Scenario 3 - Updating a Transaction
     describe('updating a transaction', () => {
         let nextAmount, nextRecipient;
         beforeEach( () => {

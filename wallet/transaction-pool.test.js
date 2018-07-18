@@ -2,14 +2,16 @@
 const TransactionPool = require('./transaction-pool');
 const Transaction = require('./transaction');
 const Wallet = require('../wallet');
+const Blockchain = require('../blockchain');
 
 describe('Transaction Pool', () => {
-    let pool, transaction, wallet, bchain; 
+    let txPool, transaction, wallet, bchain; 
 
     beforeEach((() => {
         txPool = new TransactionPool();
         wallet = new Wallet(); 
-        transaction = wallet.createTransaction('An address', 25, txPool)      
+        bchain = new Blockchain();
+        transaction = wallet.createTransaction('An address', 25, bchain, txPool);      
     }))
 
     it('adds a transaction to the transaction pool', () => {
@@ -37,7 +39,7 @@ describe('Transaction Pool', () => {
             validTransactions = [...txPool.transactions] //already contains a valid tx from previous scenario
             for( let i = 0; i < 10; i++) {
                 wallet = new Wallet();
-                transaction = wallet.createTransaction('r4nd-4dr355', 30, txPool);
+                transaction = wallet.createTransaction('r4nd-4dr355', 30, bchain, txPool);
                 if (i % 2 === 0) {
                     transaction.input.amount = 99999;   // corrupt transaction
                 } else {

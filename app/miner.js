@@ -20,7 +20,7 @@ class Miner {
         const validTransactions = this.transactionPool.validTransactions(); // An array of valid transactions
 
         // Build and Add the Reward for the Miner
-        validTransaction.push(Transaction.rewardTransaction(this.wallet, Wallet.blockchainWallet()));
+        validTransactions.push(Transaction.rewardTransaction(this.wallet, Wallet.blockchainWallet()));
 
         // validTransactions.push(transactionPool.colletFees(validTransactions));
 
