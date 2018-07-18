@@ -2,7 +2,7 @@
 // Create the Pool of unconfirmed transactions to be mined
 // Miners will collect transactions from this.transactions in blocks 
 // Typically this collection would be prioritized by the fees included in each transaction 
-// **************************************************
+// ****************************************************
 const Transaction = require('./transaction');
 
 class TransactionPool {
