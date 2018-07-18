@@ -6,7 +6,7 @@
   2. Make sure you have all the necessary node modules installed (see package.json file)  
     a. To install modules open up the command line and type 
   
-    npm -i <module name> --save
+    npm -i <module name> 
       
   3. Create an application instance with the command  
   
@@ -39,10 +39,10 @@
     Listening on port 3002
     Socket Connected
   
-  For now you can interact with the blockchain/consume the API using an application like Postman  
+  From here, you can interact with the blockchain/consume the API using an application like Postman  
     https://www.getpostman.com/apps
   
-  Available endpoints are specified in the <i>/app/index.js <i/> file
+  Available endpoints are specified in the <i>/app/index.js<i/> file
     
   A React.js front end is in the works
     
