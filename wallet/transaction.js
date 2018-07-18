@@ -2,6 +2,7 @@
 // Specify the structure of a transaction: inputs, outputs, id
 // *******************************************************
 const ChainUtil = require('../chain-util');
+const { MINER_REWARD } = require('../config');
 
 class Transaction {
     
@@ -21,15 +22,29 @@ class Transaction {
         }
 
         //Add new objects to the outputs
-        transaction.outputs.push(...[   // '...' spread operator? 
+        return Transaction.addOutputs(senderWallet, [   
             { amount: senderWallet.balance - amount, address: senderWallet.pubKey},
             { amount, address: recipientAddress}
 
         ]);
+       
+    }
+
+    static addOutputs(senderWallet, outputs) {
+        const transaction = new this();
+        transaction.outputs.push(...outputs);
 
         // Sign the transaction
-        Transaction.signTransaction(transaction, senderWallet); //Create input and sign 
-        return transaction;
+        Transaction.signTransaction(transaction, senderWallet); //Create input and sign  
+        return transaction;       
+    }
+
+    static rewardTransaction(minerWallet, blockchainWallet) {
+        // Construct a reward transaction signed by the blockchain for the miner
+        return Transaction.addOutputs(blockchainWallet,[{
+            amount: MINER_REWARD,
+            recipient: minerWallet.pubKey
+        }]);
     }
 
     static signTransaction(transaction, senderWallet) {
@@ -76,9 +91,6 @@ class Transaction {
 }
 
 module.exports = Transaction; 
-
-// Seems to be some limitations here
-// Add signature verification
 
 // Miners will draw valid transactions from the MemPool and include them in a block.
 // To confirm validity they need to verify signatures
