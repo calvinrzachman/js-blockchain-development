@@ -29,7 +29,7 @@ class Wallet {
     //Create Transactions and add them to the MemPool
     createTransaction(recipientAddress, amount, bchain, txPool) {
         // Do not allow transaction creation if insufficient wallet balance
-        // this.balance = this.calculateBalance(bchain);
+        this.balance = this.calculateBalance(bchain);
 
         if (amount > this.balance) {
             console.log(`Amount: ${amount} exceeds balance`);
