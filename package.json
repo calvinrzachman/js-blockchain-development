@@ -13,6 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/calvinrzachman/js-blockchain-development.git"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -28,5 +31,8 @@
     "jest": "^23.4.1",
     "nodemon": "^1.18.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "uuid": "^3.3.2",
+    "ws": "^5.2.2"
+  }
 }

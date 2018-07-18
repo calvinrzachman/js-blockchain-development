@@ -1,3 +1,5 @@
+// Wallet Class
+// Describe the basic wallet which holds a private/public keypair and a balance
 const { INITIAL_BALANCE } = require('../config');
 const ChainUtil = require('../chain-util');
 
