@@ -52,6 +52,10 @@ app.post('/transact', (req, res) => {
     res.redirect('/transactions'); // Redirect to existing tx GET endpoint so they can see the new tx
 });
 
+//Expose the pubKey (address) of a user so it can be shared with other individuals so they can receive currency 
+app.get('/public-key', (req, res) => {
+    res.json( { publicKey: wallet.pubKey });
+});
 
 app.listen(HTTP_PORT, () => {
     console.log(`Listening on port ${HTTP_PORT}`)
