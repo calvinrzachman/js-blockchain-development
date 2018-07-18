@@ -24,6 +24,11 @@ describe('Transaction Pool', () => {
         .toEqual(oldTransaction);
     });
 
+    it('clears transaction', () => {
+        txPool.clearTransactions();
+        expect(txPool.transactions).toEqual([]);
+    });
+
     // Scenario 2 - Valid Transaction Testing 
     describe('mixing valid and corrupt transactions', () => {
         let validTransactions

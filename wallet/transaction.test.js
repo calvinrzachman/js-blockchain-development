@@ -78,6 +78,18 @@ describe('Transaction', () => {
         });
     });
 
+    // Scenario 4 - Reward Transaction
+    describe('creating a reward transaction', () => {
+        beforeEach(() => {
+            transaction = Transaction.rewardTransaction(wallet, Wallet.blockchainWallet());
+        });
+
+        it('the reward is generated for miner wallet', () => {
+            expect(transaction.outputs.find(output => output.address === wallet.pubKey).amount)
+            .toEqual(MINER_REWARD);
+        });
+    });
+
    
 });
 

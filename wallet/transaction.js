@@ -40,11 +40,11 @@ class Transaction {
     }
 
     static rewardTransaction(minerWallet, blockchainWallet) {
-        // Construct a reward transaction signed by the blockchain for the miner
+        //Special case for Coinbase transaction - approved by blockchain itslef 
         return Transaction.addOutputs(blockchainWallet,[{
             amount: MINER_REWARD,
-            recipient: minerWallet.pubKey
-        }]);
+            address: minerWallet.pubKey
+        }])
     }
 
     static signTransaction(transaction, senderWallet) {

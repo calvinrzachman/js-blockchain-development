@@ -17,19 +17,26 @@ class Miner {
         // Grabs transactions from the pool, creates a block with of unconfirmed transactions, then
         // it tells the P2P server to synchronize the chains across network members
 
-        const validTransactions = this.transactionPool.validTransactions();
+        const validTransactions = this.transactionPool.validTransactions(); // An array of valid transactions
 
-        // Build a Reward for the Miner
+        // Build and Add the Reward for the Miner
+        validTransaction.push(Transaction.rewardTransaction(this.wallet, Wallet.blockchainWallet()));
 
         // validTransactions.push(transactionPool.colletFees(validTransactions));
 
         // Create a block consisting of the valid transactions
-       
+        const newBlock = this.blockchain.addBlock(validTransactions);
+
         // Synchronize the chains in the peer-to-peer network
+        this.p2pServer.syncChains();
 
-        // Update local transaction pool
+        // Update/Clear local transaction pool
+        this.transactionPool.clearTransactions();
 
-        // Broadcast updated transaction poo
+        // Broadcast updated transaction pool
+        this.p2pServer.broadcastClearTransactions();
+
+        return newBlock;
     }
 }
 

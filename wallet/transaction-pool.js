@@ -57,6 +57,10 @@ class TransactionPool {
         });
     }
 
+    clearTransactions() {
+        this.transactions = [];
+    }
+
 }
 
 
