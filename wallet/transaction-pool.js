@@ -28,6 +28,34 @@ class TransactionPool {
     existingTransaction(address) {
         return this.transactions.find(tx => tx.input.address === address);
     }
+    
+    validTransactions() {
+        //returns a filtered array of transactions which are valid 
+        // Implement and Follow The Consensus Rules 
+        return this.transactions.filter(tx => {
+            // Total output amount of tranasactions
+            const outputTotal = tx.outputs.reduce((total,output) => {
+                return total + output.amount; // add the amount to global total variable
+            }, 0);
+
+            // Enforce consistency between input and output amounts
+            if (tx.input.amount != outputTotal) {
+                console.log(`Invalid transaction from ${tx.input.address}. 
+                The sum value of the inputs does not equal the sum value of outputs`); // Consider miner fee
+                return; // skip the current transaction in filtering as it is not valid
+            }
+
+            // Verification of signatures
+            if (!Transaction.verifyTransaction(tx)) {
+                console.log(`Invalid signature from ${tx.input.address}.`);
+                return;  
+            }
+
+            // Add more rules here if necessary
+            console.log('Adding VALID TX');
+            return tx; // these transactions will be included in the filtered array as they follow the Consensus rules
+        });
+    }
 
 }
 
