@@ -77,7 +77,7 @@ class Wallet {
                 (current, prev) => prev.input.timestamp > current.input.timestamp ? prev : current);
 
             balance = recentInputTransaction.outputs.find(output => output.address === this.pubKey).amount;
-            startTime = recentInputTransaction.timestamp;
+            startTime = recentInputTransaction.input.timestamp;
             // Wouldnt the most recent transaction be at the end of inputTransactions?
             // inputTransactions[inputTransactions.length -1]
         }

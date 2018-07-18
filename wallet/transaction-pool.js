@@ -52,7 +52,7 @@ class TransactionPool {
             }
 
             // Add more rules here if necessary
-            console.log('Adding VALID TX');
+            console.log('Adding valid transaction');
             return tx; // these transactions will be included in the filtered array as they follow the Consensus rules
         });
     }
