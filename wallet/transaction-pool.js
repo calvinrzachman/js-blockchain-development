@@ -61,6 +61,10 @@ class TransactionPool {
         this.transactions = [];
     }
 
+    // Note that this clears the entire transaction pool. As of now we do not enforce a Block
+    // Size Limit. Add this functionaility and update this function to only remove the transactions
+    // from the pool which were included in the most recent block
+
 }
 
 
