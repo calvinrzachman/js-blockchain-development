@@ -2,7 +2,7 @@
 // Specify the structure of a transaction: inputs, outputs, id
 // *******************************************************
 const ChainUtil = require('../chain-util');
-const { MINER_REWARD } = require('../config');
+const { MINER_REWARD, COST_PER_BYTE } = require('../config');
 
 class Transaction {
     
@@ -10,6 +10,8 @@ class Transaction {
         this.id = ChainUtil.id();   // Get unique ID
         this.input = null;
         this.outputs = []; 
+        this.size = null;           // the size in bytes of a transaction. ChainUtil.getStringSize() to find size when transaction has been built
+        this.minerFee = null;       // calculate this 
     }
 
     static newTransaction(senderWallet, recipientAddress, amount) {
@@ -34,8 +36,19 @@ class Transaction {
         const transaction = new this();
         transaction.outputs.push(...outputs);
 
+        Transaction.calculateMinerFee(transaction);             // Calculate Miner Fee  
         // Sign the transaction
-        Transaction.signTransaction(transaction, senderWallet); //Create input and sign  
+        Transaction.signTransaction(transaction, senderWallet); // Create input and sign
+
+        //UPDATE (7/19)
+        // Calculate New Miner Fee
+        transaction.minerFee = Transaction.calculateMinerFee(transaction);
+        
+        // Calculate transaction size
+        const transactionString = JSON.stringify(transaction);
+        transaction.size = ChainUtil.getStringSize(transactionString);
+        //
+
         return transaction;       
     }
 
@@ -84,8 +97,30 @@ class Transaction {
 
         // Sign updated tranasaction
         Transaction.signTransaction(this, senderWallet);
+        
+        //UPDATE (7/19)
+        // Calculate New Miner Fee
+        this.minerFee = Transaction.calculateMinerFee(this);
+        
+        // Update transaction size
+        const transactionString = JSON.stringify(this);
+        this.size = ChainUtil.getStringSize(transactionString);
+        //
 
         return this;
+    }
+
+    // UPDATE - Needed
+    static calculateMinerFee(transaction) {
+        // Add a calculateMinerFee() method which calculates a fee for the transaction depending on its size
+        // Also consider allowing the user to specify the fee which they want to provide.
+        const stringTransaction = JSON.stringify(transaction);
+        const transactionByteSize = ChainUtil.getStringSize(stringTransaction);
+        transaction.size = transactionByteSize;
+        return transactionByteSize * COST_PER_BYTE;
+        // calculateMinerFee() will for now simply make this assessment based on size of tx
+        // and a STATIC fee of 1 unit of currency per byte
+        // Miners will use this function in constructOptimalBlock(tranasactionPool)
     }
 
 }
@@ -95,5 +130,5 @@ module.exports = Transaction;
 // Miners will draw valid transactions from the MemPool and include them in a block.
 // To confirm validity they need to verify signatures
 
-// Add a getMinerFee() method which calculates a fee for the transaction depending on its size
-// Also consider allowing the user to specify the fee which they want to provide.
+let transaction = { amount: 10, address: "big boy" }
+console.log(Object.keys);

@@ -3,6 +3,8 @@ const Transaction = require('./transaction');
 const Wallet = require('./index');
 const { MINER_REWARD } = require('../config');
 
+const ChainUtil = require('../chain-util');
+
 // Main Scenario
 describe('Transaction', () => {
     let transaction, wallet, recipient, amount; 
@@ -42,11 +44,24 @@ describe('Transaction', () => {
         expect(Transaction.verifyTransaction(transaction)).toBe(false);
     });
 
+    // UPDATE (7/18)
+    // Test 6
+    it('calculates the fee of transaction', () => {
+        console.log(transaction.minerFee)
+        expect(transaction.minerFee).not.toEqual(null);
+    })
+
+    // Test 7
+    it('calculates the size of a transaction', () => {
+        console.log(transaction.size)
+        expect(transaction.size).not.toEqual(null);
+    })
+
     
     // Scenario 2 - Transacting with Insufficient Balance
     describe('transacting with an `amount` which exceeds the balance', () => {
         beforeEach( () => {
-            amount = 5000;
+            amount = 10000;
             transaction = Transaction.newTransaction(wallet, recipient, amount);
         });
 
@@ -76,6 +91,12 @@ describe('Transaction', () => {
             expect(transaction.outputs.find(output => output.address === nextRecipient).amount)
             .toEqual(nextAmount);
         });
+
+        //
+        it('updates transaction size', () => {
+            expect(transaction.outputs.find(output => output.address === nextRecipient).amount)
+            .toEqual(nextAmount);
+        });
     });
 
     // Scenario 4 - Reward Transaction
@@ -90,7 +111,7 @@ describe('Transaction', () => {
         });
     });
 
-   
+    
 });
 
 // NEXT: Handle transactions submitted by multiple users (mempool, adding to blockchain)
