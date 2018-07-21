@@ -38,5 +38,13 @@ describe('Block', () => {
         expect(Block.adjustDifficulty(block.timestamp + 0.5*MINE_RATE, block)).toEqual(block.difficulty+1);
     });
 
+    // Test 6 - Block Index
+    it('the block has an index', () => {
+        expect(block.index).toEqual(1);
+    });
+
+    it('block 2 has an index', () => {
+        expect(newBlock.index).toEqual(2);
+    });
 
 });
