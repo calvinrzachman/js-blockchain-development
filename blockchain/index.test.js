@@ -54,4 +54,10 @@ describe('Blockchain', () => {
         expect(bchain.chain).toEqual(bchain2.chain);
     });
 
+    // Test 8 
+    it('grabs the latest block', () => {
+        const block = bchain.addBlock('block 1');
+        expect(bchain.latestBlock()).toEqual(block);
+    });
+
 });

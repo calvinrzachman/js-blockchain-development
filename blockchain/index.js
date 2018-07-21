@@ -43,6 +43,11 @@ class Blockchain {
     // Blockchains like BTC take the longest chain as the valid chain. The longest chain is the 
     // chain with the most Proof of Work
     } 
+
+    // Get the latest block
+    latestBlock() {
+        return this.chain[this.chain.length - 1];
+    }
 }
 
 module.exports = Blockchain;
