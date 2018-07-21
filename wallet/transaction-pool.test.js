@@ -55,6 +55,31 @@ describe('Transaction Pool', () => {
         it('grabs only valid transactions', () => {
             expect(txPool.validTransactions()).toEqual(validTransactions);
         });
+
+        // Scenario 3 - Clears Confirmed Transactions from Transaction Pool
+        describe('clears ONLY confirmed transactions from txPool', () => {
+            let confirmedTransactions =  [];
+            let unconfirmedTransactions = [];
+            beforeEach(() => {
+                // Dont use the miner class - build the optimal solution and total set yourself
+                for(let i = 0; i < validTransactions.length; i++) {
+                    if(i % 2 === 0) {
+                        confirmedTransactions.push(validTransactions[i]); // Only include some valid transactions 
+                    } else {
+                        unconfirmedTransactions.push(validTransactions[i]); // This 
+                    }
+                }
+               
+            });
+
+            it('clears confirmed transactions', () => {
+                txPool.clearConfirmedTransactions(validTransactions, confirmedTransactions);
+                expect(txPool.transactions).toEqual(unconfirmedTransactions); 
+                // possible we need to stringify the arrays 
+            });
+
+        });
+
     });
 
 });

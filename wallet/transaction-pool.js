@@ -65,6 +65,18 @@ class TransactionPool {
     // Size Limit. Add this functionaility and update this function to only remove the transactions
     // from the pool which were included in the most recent block
 
+    clearConfirmedTransactions(validTransactions, confirmedTransactions) {
+        // Given an array of valid transactions, remove the confirmed transactions
+        // from the current transaction pool
+
+        // In set notation we want A - A intersect B (the transactions which are not common)
+        const unconfirmedTransactions = validTransactions.filter(tx => {
+            return !confirmedTransactions.includes(tx);
+        });
+
+        this.transactions = unconfirmedTransactions;
+    }
+
 }
 
 
