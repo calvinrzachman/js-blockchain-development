@@ -6,7 +6,7 @@
   2. Make sure you have all the necessary node modules installed (see package.json file for list of dependencies)  
     a. To install modules open up the command line and type 
   
-    npm -i <module name> 
+    npm install
       
   3. Create an application instance with the command  
   
